@@ -242,63 +242,78 @@ button:active {
 
 /* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
+    body {
+        height: 100vh;
+        padding: 0;
+        justify-content: space-evenly; /* Better vertical spacing */
+    }
+
     .carousel-container {
-        width: 90vw; /* Use viewport width */
-        padding: 15px;
-        margin: 10px;
+        width: 85vw;
+        height: auto;
+        padding: 10px;
+        margin: 10px auto;
+    }
+
+    .carousel {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
     }
 
     .carousel img {
-        width: 250px; /* Smaller images on mobile */
-        height: 330px;
+        width: 85vw; /* Full width of container */
+        height: auto; /* Maintain aspect ratio */
+        max-height: 40vh; /* Limit height to prevent overflow */
+        object-fit: contain;
     }
 
     h1 {
-        font-size: 2em; /* Smaller heading on mobile */
+        font-size: 2.5em;
         margin: 15px 0;
+        padding: 0 20px;
+        text-align: center;
+    }
+
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        align-items: center;
     }
 
     button.yes, button.no {
-        padding: 12px 25px;
-        font-size: 18px;
-        margin: 8px;
-    }
-
-    .popup-content {
-        width: 85%;
-        margin: 0 10px;
-        padding: 20px;
-    }
-
-    .popup-content p {
-        font-size: 18px;
+        width: 200px;
+        padding: 15px 0;
+        font-size: 20px;
+        margin: 0;
     }
 
     .carousel-button {
-        width: 40px;
-        height: 40px;
-        padding: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
     }
 
-    /* Adjust carousel slide calculation for mobile */
-    .carousel {
-        gap: 15px; /* Smaller gap on mobile */
+    .prev {
+        left: 5px;
+    }
+
+    .next {
+        right: 5px;
     }
 }
 
-/* Small phones */
+/* Additional styles for very small screens */
 @media screen and (max-width: 380px) {
-    .carousel img {
-        width: 200px; /* Even smaller images for very small devices */
-        height: 280px;
-    }
-
     h1 {
-        font-size: 1.8em;
+        font-size: 2em;
     }
 
     button.yes, button.no {
-        padding: 10px 20px;
-        font-size: 16px;
+        width: 180px;
+        padding: 12px 0;
+        font-size: 18px;
     }
 } 
