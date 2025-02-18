@@ -62,17 +62,18 @@
                 currentSlide = totalSlides - 1;
             }
             
-            // Responsive offset calculation
-            const imageWidth = window.innerWidth <= 768 ? 250 : 320; // Mobile vs Desktop
-            const gap = window.innerWidth <= 768 ? 15 : 30; // Mobile vs Desktop
-            const offset = currentSlide * (imageWidth + gap);
+            // Mobile-specific offset calculation
+            const isMobile = window.innerWidth <= 768;
+            const offset = isMobile ? 
+                currentSlide * (window.innerWidth * 0.85) : // 85vw for mobile
+                currentSlide * (320 + 30); // desktop calculation
             
             carousel.style.transform = `translateX(-${offset}px)`;
         }
         
-        // Update carousel on window resize
+        // Recalculate on resize
         window.addEventListener('resize', () => {
-            moveCarousel(0); // Recalculate position
+            moveCarousel(0);
         });
         
         // Optional: Auto-play the carousel
