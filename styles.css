@@ -11,6 +11,10 @@ body {
     color: white;
     animation: gradientBG 15s ease infinite;
     background-size: 400% 400%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 20px 10px;
+    box-sizing: border-box;
 }
 
 @keyframes gradientBG {
@@ -234,4 +238,67 @@ button:active {
     80% { transform: scale(1.1) translateY(0) rotate(-5deg); }
     90% { transform: scale(1.05) translateY(-5px); }
     100% { transform: scale(1) translateY(0); }
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    .carousel-container {
+        width: 90vw; /* Use viewport width */
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .carousel img {
+        width: 250px; /* Smaller images on mobile */
+        height: 330px;
+    }
+
+    h1 {
+        font-size: 2em; /* Smaller heading on mobile */
+        margin: 15px 0;
+    }
+
+    button.yes, button.no {
+        padding: 12px 25px;
+        font-size: 18px;
+        margin: 8px;
+    }
+
+    .popup-content {
+        width: 85%;
+        margin: 0 10px;
+        padding: 20px;
+    }
+
+    .popup-content p {
+        font-size: 18px;
+    }
+
+    .carousel-button {
+        width: 40px;
+        height: 40px;
+        padding: 10px;
+    }
+
+    /* Adjust carousel slide calculation for mobile */
+    .carousel {
+        gap: 15px; /* Smaller gap on mobile */
+    }
+}
+
+/* Small phones */
+@media screen and (max-width: 380px) {
+    .carousel img {
+        width: 200px; /* Even smaller images for very small devices */
+        height: 280px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    button.yes, button.no {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
 } 

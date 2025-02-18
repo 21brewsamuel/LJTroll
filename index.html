@@ -56,14 +56,22 @@
         function moveCarousel(direction) {
             currentSlide = (currentSlide + direction) % totalSlides;
             
-            // Handle negative values when going backwards
             if (currentSlide < 0) {
                 currentSlide = totalSlides - 1;
             }
             
-            const offset = currentSlide * (320 + 30); // image width + gap
+            // Responsive offset calculation
+            const imageWidth = window.innerWidth <= 768 ? 250 : 320; // Mobile vs Desktop
+            const gap = window.innerWidth <= 768 ? 15 : 30; // Mobile vs Desktop
+            const offset = currentSlide * (imageWidth + gap);
+            
             carousel.style.transform = `translateX(-${offset}px)`;
         }
+        
+        // Update carousel on window resize
+        window.addEventListener('resize', () => {
+            moveCarousel(0); // Recalculate position
+        });
         
         // Optional: Auto-play the carousel
         // setInterval(() => moveCarousel(1), 3000); // Uncomment to enable auto-play
