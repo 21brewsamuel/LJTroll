@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who want me?</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="carousel-container">
+        <button class="carousel-button prev" onclick="moveCarousel(-1)">❮</button>
+        <div class="carousel">
+            <img src="uglywilliam.JPG" alt="Your Friend">
+            <img src="uglywilliam2.JPG" alt="Your Friend Again">
+            <img src="uglywilliam3.JPG" alt="Your Friend Once More">
+            <img src="uglywilliam4.JPG" alt="Your Friend Returns">
+        </div>
+        <button class="carousel-button next" onclick="moveCarousel(1)">❯</button>
+    </div>
+    <h1>Who wants me?</h1>
+    <button class="yes" onclick="askAgain(0)">Yes</button>
+    <button class="no" onclick="showPopup('no')">No</button>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <p id="popup-message"></p>
+            <button id="popup-button" onclick="handlePopupResponse()">Yes</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            "Are you sure? 🤔",
+            "Are you really sure? 🧐",
+            "Do you realize I'm really ugly? 😳",
+            "Like really really ugly 😏",
+            "Wow, you're really brave! 🥰"
+        ];
+        
+        let currentQuestionIndex = 0;
+        
+        function askAgain(index) {
+            currentQuestionIndex = index;
+            if (index < questions.length) {
+                showPopup('yes', questions[index]);
+            } else {
+                showPopup('yes', "No way my ugly ass is about to get a girlfriend! 💕");
+            }
+        }
+        
+        let currentSlide = 0;
+        const carousel = document.querySelector('.carousel');
+        const images = carousel.querySelectorAll('img');
+        const totalSlides = images.length;
+        
+        function moveCarousel(direction) {
+            currentSlide = (currentSlide + direction) % totalSlides;
+            
+            // Handle negative values when going backwards
+            if (currentSlide < 0) {
+                currentSlide = totalSlides - 1;
+            }
+            
+            const offset = currentSlide * (320 + 30); // image width + gap
+            carousel.style.transform = `translateX(-${offset}px)`;
+        }
+        
+        // Optional: Auto-play the carousel
+        // setInterval(() => moveCarousel(1), 3000); // Uncomment to enable auto-play
+        
+        // Initialize carousel position
+        moveCarousel(0);
+
+        function showPopup(type, message) {
+            const popup = document.getElementById('popup');
+            const popupMessage = document.getElementById('popup-message');
+            const popupButton = document.getElementById('popup-button');
+            
+            if (type === 'no') {
+                popupMessage.textContent = "Of course not. Nobody wants me 😢";
+                popupButton.textContent = "Close";
+            } else {
+                popupMessage.textContent = message;
+                popupButton.textContent = "Yes";
+            }
+            
+            popup.style.display = 'flex';
+            setTimeout(() => {
+                popup.style.opacity = '1';
+                popup.querySelector('.popup-content').style.transform = 'scale(1)';
+            }, 10);
+        }
+        
+        function handlePopupResponse() {
+            const popup = document.getElementById('popup');
+            
+            if (currentQuestionIndex < questions.length) {
+                closePopup();
+                setTimeout(() => {
+                    askAgain(currentQuestionIndex + 1);
+                }, 300);
+            } else {
+                closePopup();
+            }
+        }
+        
+        function closePopup() {
+            const popup = document.getElementById('popup');
+            popup.style.opacity = '0';
+            popup.querySelector('.popup-content').style.transform = 'scale(0.7)';
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 300);
+        }
+    </script>
+</body>
+</html>
