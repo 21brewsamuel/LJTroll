@@ -7,20 +7,79 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="carousel-container">
-        <button class="carousel-button prev" onclick="moveCarousel(-1)">❮</button>
-        <div class="carousel">
-            <img src="uglywilliam.JPG" alt="Your Friend">
-            <img src="uglywilliam2.JPG" alt="Your Friend Again">
-            <img src="uglywilliam3.JPG" alt="Your Friend Once More">
-            <img src="uglywilliam4.JPG" alt="Your Friend Returns">
-        </div>
-        <button class="carousel-button next" onclick="moveCarousel(1)">❯</button>
+    <div class="header">
+        <h1 class="main-title">Help Ugly William Find A Girl</h1>
     </div>
-    <h1>Who wants me?</h1>
-    <div class="button-container">
-        <button class="yes" onclick="handleYesClick()">Yes</button>
-        <button class="no" onclick="showPopup('no')">No</button>
+
+    <div class="content-wrapper">
+        <div class="carousel-container">
+            <button class="carousel-button prev" onclick="moveCarousel(-1)">❮</button>
+            <div class="carousel">
+                <img src="uglywilliam.JPG" alt="Your Friend">
+                <img src="uglywilliam2.JPG" alt="Your Friend Again">
+                <img src="uglywilliam3.JPG" alt="Your Friend Once More">
+                <img src="uglywilliam4.JPG" alt="Your Friend Returns">
+            </div>
+            <button class="carousel-button next" onclick="moveCarousel(1)">❯</button>
+        </div>
+
+        <div class="stats-container">
+            <h2>My Stats 📊</h2>
+            <div class="stat-bar">
+                <span class="stat-label">Height</span>
+                <div class="stat-progress">
+                    <div class="stat-fill" style="width: 75%"></div>
+                </div>
+                <span class="stat-value">5'8"</span>
+            </div>
+            
+            <div class="stat-bar">
+                <span class="stat-label">Ugliness</span>
+                <div class="stat-progress">
+                    <div class="stat-fill" style="width: 95%"></div>
+                </div>
+                <span class="stat-value">9.5/10</span>
+            </div>
+            
+            <div class="stat-bar">
+                <span class="stat-label">Major Deficiencies</span>
+                <div class="stat-list">
+                    <span>• Tiny Dick 😅</span>
+                    <span>• Ugly Ugly 💔</span>
+                    <span>• Broke AF 💸</span>
+                    <span>• Teeth under construction 🦷</span>
+                </div>
+            </div>
+        </div>
+
+        <h1>Who wants me?</h1>
+        <div class="button-container">
+            <button class="yes" onclick="handleYesClick()">Yes</button>
+            <button class="no" onclick="showPopup('no')">No</button>
+        </div>
+
+        <div class="reviews-container">
+            <h2>Reviews from Previous Rejections 💔</h2>
+            <div class="reviews">
+                <div class="review-card">
+                    <div class="review-stars">⭐⭐</div>
+                    <p class="review-text">"He's funny, but that's about it. His jokes are as bad as his looks."</p>
+                    <p class="reviewer">- Girl from Tinder</p>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-stars">⭐</div>
+                    <p class="review-text">"Bro really thought he had a chance 💀"</p>
+                    <p class="reviewer">- Ama Agyeiwaa</p>
+                </div>
+
+                <div class="review-card">
+                    <div class="review-stars">⭐⭐⭐</div>
+                    <p class="review-text">"Nice personality, but I don't think my parents would approve..."</p>
+                    <p class="reviewer">- Waakye Seller</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="popup" class="popup">
@@ -56,30 +115,12 @@
         const totalSlides = images.length;
         
         function moveCarousel(direction) {
-            currentSlide = (currentSlide + direction) % totalSlides;
-            
-            if (currentSlide < 0) {
-                currentSlide = totalSlides - 1;
-            }
-            
-            // Mobile-specific offset calculation
-            const isMobile = window.innerWidth <= 768;
-            const offset = isMobile ? 
-                currentSlide * (window.innerWidth * 0.85) : // 85vw for mobile
-                currentSlide * (320 + 30); // desktop calculation
-            
-            carousel.style.transform = `translateX(-${offset}px)`;
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            const offset = currentSlide * 100; // Use percentage
+            carousel.style.transform = `translateX(-${offset}%)`;
         }
         
-        // Recalculate on resize
-        window.addEventListener('resize', () => {
-            moveCarousel(0);
-        });
-        
-        // Optional: Auto-play the carousel
-        // setInterval(() => moveCarousel(1), 3000); // Uncomment to enable auto-play
-        
-        // Initialize carousel position
+        // Initialize carousel
         moveCarousel(0);
 
         function showPopup(type, message) {
