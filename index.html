@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Who want me?</title>
+    <title>Who wants me?</title>
+    <meta name="description" content="Help Ugly William find a girl. Reviews from previous rejections included.">
+    <meta property="og:title" content="Help Ugly William Find A Girl">
+    <meta property="og:description" content="Who wants me? 💔">
+    <meta property="og:image" content="https://ljisugly.com/uglywilliam.JPG">
+    <meta property="og:url" content="https://ljisugly.com/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💔</text></svg>">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,14 +22,15 @@
 
     <div class="content-wrapper">
         <div class="carousel-container">
-            <button class="carousel-button prev" onclick="moveCarousel(-1)">❮</button>
+            <button class="carousel-button prev" onclick="moveCarousel(-1)" aria-label="Previous photo">❮</button>
             <div class="carousel">
-                <img src="uglywilliam.JPG" alt="Your Friend">
-                <img src="uglywilliam2.JPG" alt="Your Friend Again">
-                <img src="uglywilliam3.JPG" alt="Your Friend Once More">
-                <img src="uglywilliam4.JPG" alt="Your Friend Returns">
+                <img src="uglywilliam.JPG" alt="William">
+                <img src="uglywilliam2.JPG" alt="William again" loading="lazy">
+                <img src="uglywilliam3.JPG" alt="William once more" loading="lazy">
+                <img src="uglywilliam4.JPG" alt="William returns" loading="lazy">
             </div>
-            <button class="carousel-button next" onclick="moveCarousel(1)">❯</button>
+            <button class="carousel-button next" onclick="moveCarousel(1)" aria-label="Next photo">❯</button>
+            <div class="carousel-dots"></div>
         </div>
 
         <div class="stats-container">
@@ -91,6 +100,46 @@
     </div>
 
     <script>
+        // Carousel
+        const carousel = document.querySelector('.carousel');
+        const slides = carousel.querySelectorAll('img');
+        const dotsContainer = document.querySelector('.carousel-dots');
+        let currentSlide = 0;
+
+        slides.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        });
+        const dots = dotsContainer.querySelectorAll('span');
+
+        function goToSlide(index) {
+            currentSlide = (index + slides.length) % slides.length;
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+        }
+
+        function moveCarousel(direction) {
+            goToSlide(currentSlide + direction);
+        }
+
+        let touchStartX = null;
+        carousel.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+        carousel.addEventListener('touchend', e => {
+            if (touchStartX === null) return;
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 40) moveCarousel(dx < 0 ? 1 : -1);
+            touchStartX = null;
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft') moveCarousel(-1);
+            if (e.key === 'ArrowRight') moveCarousel(1);
+        });
+
+        goToSlide(0);
+
+        // Yes / No popups
         const questions = [
             "Are you sure? 🤔",
             "Are you really sure? 🧐",
@@ -98,84 +147,49 @@
             "Like really really ugly 😏",
             "Wow, you're really brave! 🥰"
         ];
-        
+        const finalMessage = "No way my ugly ass is about to get a girlfriend! 💕";
+
+        const popup = document.getElementById('popup');
+        const popupMessage = document.getElementById('popup-message');
+        const popupButton = document.getElementById('popup-button');
         let currentQuestionIndex = 0;
-        
-        function askAgain(index) {
-            currentQuestionIndex = index;
-            if (index < questions.length) {
-                showPopup('yes', questions[index]);
-            } else {
-                showPopup('yes', "No way my ugly ass is about to get a girlfriend! 💕");
-            }
-        }
-        
-        let currentSlide = 0;
-        const carousel = document.querySelector('.carousel');
-        const images = carousel.querySelectorAll('img');
-        const totalSlides = images.length;
-        
-        function moveCarousel(direction) {
-            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-            const offset = currentSlide * 100; // Use percentage
-            carousel.style.transform = `translateX(-${offset}%)`;
-        }
-        
-        // Initialize carousel
-        moveCarousel(0);
 
         function showPopup(type, message) {
-            const popup = document.getElementById('popup');
-            const popupMessage = document.getElementById('popup-message');
-            const popupButton = document.getElementById('popup-button');
-            
             if (type === 'no') {
                 popupMessage.textContent = "Of course not. Nobody wants me 😢";
                 popupButton.textContent = "Close";
+                currentQuestionIndex = questions.length;
             } else {
                 popupMessage.textContent = message;
                 popupButton.textContent = "Yes";
             }
-            
-            popup.style.display = 'flex';
-            setTimeout(() => {
-                popup.style.opacity = '1';
-                popup.querySelector('.popup-content').style.transform = 'scale(1)';
-            }, 10);
+            popup.classList.add('open');
         }
-        
-        function handlePopupResponse() {
-            const popup = document.getElementById('popup');
-            
-            if (currentQuestionIndex < questions.length) {
-                closePopup();
-                setTimeout(() => {
-                    askAgain(currentQuestionIndex + 1);
-                }, 300);
-            } else {
-                closePopup();
-            }
-            
-        }
-        
+
         function closePopup() {
-            const popup = document.getElementById('popup');
-            popup.style.opacity = '0';
-            popup.querySelector('.popup-content').style.transform = 'scale(0.7)';
-            setTimeout(() => {
-                popup.style.display = 'none';
-            }, 300);
+            popup.classList.remove('open');
+        }
+
+        function askAgain(index) {
+            currentQuestionIndex = index;
+            showPopup('yes', index < questions.length ? questions[index] : finalMessage);
+        }
+
+        function handlePopupResponse() {
+            closePopup();
+            if (currentQuestionIndex < questions.length) {
+                setTimeout(() => askAgain(currentQuestionIndex + 1), 300);
+            }
         }
 
         function handleYesClick() {
             const yesButton = document.querySelector('.yes');
             yesButton.classList.add('yes-clicked');
-            
-            // Wait for animation to complete before starting popups
+            // Wait for the bounce animation before starting the popups
             setTimeout(() => {
                 yesButton.classList.remove('yes-clicked');
                 askAgain(0);
-            }, 1500); // Match this with the CSS animation duration
+            }, 1500);
         }
     </script>
 </body>
