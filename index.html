@@ -29,9 +29,11 @@
                 <img src="uglywilliam3.JPG" alt="William once more" loading="lazy">
                 <img src="uglywilliam4.JPG" alt="William returns" loading="lazy">
                 <img src="uglywilliam5.jpg" alt="William and his twin" loading="lazy">
+                <img src="uglywilliam6.jpg" alt="Before he got ugly" data-caption="Before he got ugly 📸" loading="lazy">
             </div>
             <button class="carousel-button next" onclick="moveCarousel(1)" aria-label="Next photo">❯</button>
             <div class="carousel-dots"></div>
+            <div class="carousel-caption"></div>
         </div>
 
         <div class="stats-container">
@@ -55,7 +57,6 @@
             <div class="stat-bar">
                 <span class="stat-label">Major Deficiencies</span>
                 <div class="stat-list">
-                    <span>• Tiny Dick 😅</span>
                     <span>• Ugly Ugly 💔</span>
                     <span>• Broke AF 💸</span>
                     <span>• Teeth under construction 🦷</span>
@@ -105,6 +106,7 @@
         const carousel = document.querySelector('.carousel');
         const slides = carousel.querySelectorAll('img');
         const dotsContainer = document.querySelector('.carousel-dots');
+        const caption = document.querySelector('.carousel-caption');
         let currentSlide = 0;
 
         slides.forEach((_, i) => {
@@ -118,6 +120,8 @@
             currentSlide = (index + slides.length) % slides.length;
             carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
             dots.forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+            caption.textContent = slides[currentSlide].dataset.caption || '';
+            caption.hidden = !caption.textContent;
         }
 
         function moveCarousel(direction) {
